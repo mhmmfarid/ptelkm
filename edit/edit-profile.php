@@ -346,14 +346,25 @@ form {
     <form action="../simpan/simpan-profile.php" method="post" enctype="multipart/form-data">
     <div class="profile-header">
         <!-- Menampilkan gambar profil yang ada di database -->
-        <img 
-            src="<?php echo $gam ? 'uploads/' . htmlspecialchars($gambar, ENT_QUOTES, 'UTF-8') : '../aset/pp.jpg'; ?>" 
-            alt="Profile" 
-            class="profile-pic" 
-            id="profilePic" 
-            onclick="triggerFilePicker()"
-            style="cursor: pointer; border: 1px solid #ccc; width: 120px; height: 120px; object-fit: cover;">
-        <input type="file" id="uploadAvatar" style="display:none;" accept="image/*" name="gambar" onchange="previewImage(event)">
+        <?php if ($status !== 'user'): ?>
+            <img 
+                src="<?php echo (!empty($gam) && file_exists('../uploads/' . $gam)) ? '../uploads/' . htmlspecialchars($gam, ENT_QUOTES, 'UTF-8') : '../aset/pp.jpg'; ?>" 
+                alt="Profile" 
+                class="profile-pic" 
+                id="profilePic" 
+                onclick="triggerFilePicker()"
+                style="cursor: pointer; border: 1px solid #ccc; width: 120px; height: 120px; object-fit: cover;">
+            <input type="file" id="uploadAvatar" style="display:none;" accept="image/*" name="gambar" onchange="previewImage(event)">
+            <small class="text-muted d-block text-center mt-1 w-100">Klik gambar untuk mengubah foto</small>
+        <?php else: ?>
+            <img 
+                src="<?php echo (!empty($gam) && file_exists('../uploads/' . $gam)) ? '../uploads/' . htmlspecialchars($gam, ENT_QUOTES, 'UTF-8') : '../aset/pp.jpg'; ?>" 
+                alt="Profile" 
+                class="profile-pic" 
+                id="profilePic" 
+                style="border: 1px solid #ccc; width: 120px; height: 120px; object-fit: cover; cursor: default;">
+            <small class="text-danger d-block text-center mt-1 w-100">Foto profil diatur oleh Admin</small>
+        <?php endif; ?>
     </div>
 
     <div class="form-row">

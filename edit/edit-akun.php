@@ -108,7 +108,7 @@ textarea, input[type="text"], input[type="date"], select {
 </style>
 
 <body>
-    <form action="../update/update-akun.php" method="post">
+    <form action="../update/update-akun.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?php echo $data['id']?>">
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="card p-4 shadow-lg signup-form">
@@ -134,6 +134,19 @@ textarea, input[type="text"], input[type="date"], select {
     </div>
 </div>
 
+<div class="row mb-3 align-items-center">
+    <div class="col-md-4 text-center">
+        <?php 
+        $current_pic = (!empty($data['gambar']) && file_exists('../uploads/' . $data['gambar'])) ? '../uploads/' . $data['gambar'] : '../aset/pp.jpg';
+        ?>
+        <img src="<?php echo htmlspecialchars($current_pic, ENT_QUOTES, 'UTF-8'); ?>" id="previewPic" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #FFAC6D;">
+    </div>
+    <div class="col-md-8">
+        <label for="gambar" class="form-label">Foto Profil</label>
+        <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" onchange="previewImage(event)">
+    </div>
+</div>
+
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="status" class="form-label">Status</label>
@@ -149,10 +162,22 @@ textarea, input[type="text"], input[type="date"], select {
                 <div class="d-flex justify-content-end">
                     <button type="submit" value="update" class="btn btn-primary px-4">Save & Continue</button>
                 </div>
-            </form>
         </div>
     </div>
 </form>
+    <script>
+        function previewImage(event) {
+            const preview = document.getElementById('previewPic');
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
